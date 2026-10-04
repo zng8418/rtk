@@ -165,13 +165,10 @@ jobs:
     needs: [build, build-deb, build-rpm]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v3
-        id: app-token
-        with:
-          client-id: ${{ secrets.APP_CLIENT_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          permission-contents: write
-
+      # Fork note: upstream signs release uploads with a GitHub App
+      # (APP_CLIENT_ID / APP_PRIVATE_KEY) that is NOT configured on this fork.
+      # The built-in GITHUB_TOKEN already has contents:write (declared above),
+      # so use it instead.
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -218,7 +215,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.version }}
           files: release/*
           prerelease: ${{ inputs.prerelease }}
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ github.token }}
 
   notify-discord:
     name: Notify Discord
