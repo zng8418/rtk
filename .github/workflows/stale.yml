@@ -12,23 +12,19 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  issues: write
+  pull-requests: write
 
 jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        id: app-token
-        with:
-          client-id: ${{ secrets.APP_CLIENT_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          permission-issues: write
-          permission-pull-requests: write
-
+      # fork修复(2026-10-19): 上游用GitHub App造token, 但fork无APP_CLIENT_ID/APP_PRIVATE_KEY secrets
+      #   → create-github-app-token步骤断连挂3周(10-05/10-12/10-19)。fork场景GITHUB_TOKEN足够。
       - uses: actions/stale@v11
         with:
-          repo-token: ${{ steps.app-token.outputs.token }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           # --- Issues & PRs ---
           days-before-stale: 90
           days-before-close: 7
