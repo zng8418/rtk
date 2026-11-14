@@ -22,6 +22,12 @@
   <a href="https://discord.gg/RySmvNF5kF">Discord</a>
 </p>
 
+> **Fork note (zng8418/rtk)** — this fork additionally ships **baseline x86-64 builds for
+> CPUs without AVX2** (e.g. Intel i5-3337U / Ivy Bridge), where the upstream
+> `target-cpu=native` releases die with `Illegal instruction (core dumped)`.
+> See [BASELINE_BUILD.md](BASELINE_BUILD.md) ·
+> [release `baseline-v0.51.1-x86_64`](https://github.com/zng8418/rtk/releases/tag/baseline-v0.51.1-x86_64)
+
 <p align="center">
   <a href="README.md">English</a> &bull;
   <a href="README_fr.md">Francais</a> &bull;
